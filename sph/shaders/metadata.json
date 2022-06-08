@@ -1,0 +1,196 @@
+{
+"aot_data": {
+  "kernels": {"boundary_handle_c64_0_k0014_vk": {
+      "tasks": [{
+          "type": "range_for",
+          "range_hint": "8000",
+          "name": "boundary_handle_c64_0_k0014_vk_0_t00",
+          "source_path": "shaders/boundary_handle_c64_0_k0014_vk_0_t00.spv",
+          "gpu_block_size": 128,
+          "buffer_binds": [{
+              "buffer": {
+                "type": 2,
+                "id": -1},
+              "binding": 0}]}],
+      "args_count": 3,
+      "rets_count": 0,
+      "args_buffer_size": 24,
+      "rets_buffer_size": 0,
+      "scalar_args": {},
+      "arr_args": {"2": {
+          "dtype_name": "f32",
+          "field_dim": 1,
+          "element_shape": [3],
+          "shape_offset_in_args_buf": 8,
+          "bind_index": 0},"1": {
+          "dtype_name": "f32",
+          "field_dim": 1,
+          "element_shape": [3],
+          "shape_offset_in_args_buf": 4,
+          "bind_index": 0},"0": {
+          "dtype_name": "f32",
+          "field_dim": 1,
+          "element_shape": [3],
+          "shape_offset_in_args_buf": 0,
+          "bind_index": 0}}},"update_force_c60_0_k0012_vk": {
+      "tasks": [{
+          "type": "range_for",
+          "range_hint": "8000",
+          "name": "update_force_c60_0_k0012_vk_0_t00",
+          "source_path": "shaders/update_force_c60_0_k0012_vk_0_t00.spv",
+          "gpu_block_size": 128,
+          "buffer_binds": [{
+              "buffer": {
+                "type": 2,
+                "id": -1},
+              "binding": 0}]}],
+      "args_count": 6,
+      "rets_count": 0,
+      "args_buffer_size": 48,
+      "rets_buffer_size": 0,
+      "scalar_args": {},
+      "arr_args": {"5": {
+          "dtype_name": "f32",
+          "field_dim": 0,
+          "element_shape": [3],
+          "shape_offset_in_args_buf": 20,
+          "bind_index": 0},"4": {
+          "dtype_name": "f32",
+          "field_dim": 1,
+          "element_shape": [3],
+          "shape_offset_in_args_buf": 16,
+          "bind_index": 0},"3": {
+          "dtype_name": "f32",
+          "field_dim": 1,
+          "element_shape": [],
+          "shape_offset_in_args_buf": 12,
+          "bind_index": 0},"2": {
+          "dtype_name": "f32",
+          "field_dim": 1,
+          "element_shape": [],
+          "shape_offset_in_args_buf": 8,
+          "bind_index": 0},"1": {
+          "dtype_name": "f32",
+          "field_dim": 1,
+          "element_shape": [3],
+          "shape_offset_in_args_buf": 4,
+          "bind_index": 0},"0": {
+          "dtype_name": "f32",
+          "field_dim": 1,
+          "element_shape": [3],
+          "shape_offset_in_args_buf": 0,
+          "bind_index": 0}}},"update_density_c58_0_k0006_vk": {
+      "tasks": [{
+          "type": "range_for",
+          "range_hint": "8000",
+          "name": "update_density_c58_0_k0006_vk_0_t00",
+          "source_path": "shaders/update_density_c58_0_k0006_vk_0_t00.spv",
+          "gpu_block_size": 128,
+          "buffer_binds": [{
+              "buffer": {
+                "type": 2,
+                "id": -1},
+              "binding": 0}]}],
+      "args_count": 3,
+      "rets_count": 0,
+      "args_buffer_size": 24,
+      "rets_buffer_size": 0,
+      "scalar_args": {},
+      "arr_args": {"2": {
+          "dtype_name": "f32",
+          "field_dim": 1,
+          "element_shape": [],
+          "shape_offset_in_args_buf": 8,
+          "bind_index": 0},"1": {
+          "dtype_name": "f32",
+          "field_dim": 1,
+          "element_shape": [],
+          "shape_offset_in_args_buf": 4,
+          "bind_index": 0},"0": {
+          "dtype_name": "f32",
+          "field_dim": 1,
+          "element_shape": [3],
+          "shape_offset_in_args_buf": 0,
+          "bind_index": 0}}},"advance_c62_0_k0013_vk": {
+      "tasks": [{
+          "type": "range_for",
+          "range_hint": "8000",
+          "name": "advance_c62_0_k0013_vk_0_t00",
+          "source_path": "shaders/advance_c62_0_k0013_vk_0_t00.spv",
+          "gpu_block_size": 128,
+          "buffer_binds": [{
+              "buffer": {
+                "type": 2,
+                "id": -1},
+              "binding": 0}]}],
+      "args_count": 3,
+      "rets_count": 0,
+      "args_buffer_size": 24,
+      "rets_buffer_size": 0,
+      "scalar_args": {},
+      "arr_args": {"2": {
+          "dtype_name": "f32",
+          "field_dim": 1,
+          "element_shape": [3],
+          "shape_offset_in_args_buf": 8,
+          "bind_index": 0},"1": {
+          "dtype_name": "f32",
+          "field_dim": 1,
+          "element_shape": [3],
+          "shape_offset_in_args_buf": 4,
+          "bind_index": 0},"0": {
+          "dtype_name": "f32",
+          "field_dim": 1,
+          "element_shape": [3],
+          "shape_offset_in_args_buf": 0,
+          "bind_index": 0}}},"initialize_particle_c56_0_k0003_vk": {
+      "tasks": [{
+          "type": "serial",
+          "range_hint": "",
+          "name": "initialize_particle_c56_0_k0003_vk_0_t00",
+          "source_path": "shaders/initialize_particle_c56_0_k0003_vk_0_t00.spv",
+          "gpu_block_size": 1,
+          "buffer_binds": [{
+              "buffer": {
+                "type": 2,
+                "id": -1},
+              "binding": 0}]},{
+          "type": "range_for",
+          "range_hint": "8000",
+          "name": "initialize_particle_c56_0_k0003_vk_1_t01",
+          "source_path": "shaders/initialize_particle_c56_0_k0003_vk_1_t01.spv",
+          "gpu_block_size": 128,
+          "buffer_binds": [{
+              "buffer": {
+                "type": 2,
+                "id": -1},
+              "binding": 0}]}],
+      "args_count": 4,
+      "rets_count": 0,
+      "args_buffer_size": 32,
+      "rets_buffer_size": 0,
+      "scalar_args": {},
+      "arr_args": {"3": {
+          "dtype_name": "f32",
+          "field_dim": 0,
+          "element_shape": [3],
+          "shape_offset_in_args_buf": 12,
+          "bind_index": 0},"2": {
+          "dtype_name": "i32",
+          "field_dim": 1,
+          "element_shape": [],
+          "shape_offset_in_args_buf": 8,
+          "bind_index": 0},"1": {
+          "dtype_name": "f32",
+          "field_dim": 1,
+          "element_shape": [3],
+          "shape_offset_in_args_buf": 4,
+          "bind_index": 0},"0": {
+          "dtype_name": "f32",
+          "field_dim": 1,
+          "element_shape": [3],
+          "shape_offset_in_args_buf": 0,
+          "bind_index": 0}}}},
+  "kernel_tmpls": {},
+  "fields": [],
+  "root_buffer_size": 0}}
