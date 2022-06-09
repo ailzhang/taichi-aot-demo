@@ -24,6 +24,17 @@ void get_data(
   std::memcpy(data, device_arr_ptr, size);
   vulkan_runtime->get_ti_device()->unmap(alloc);
 }
+void set_data(
+    taichi::lang::gfx::GfxRuntime *vulkan_runtime,
+    taichi::lang::DeviceAllocation &alloc,
+    void *data,
+    size_t size) {
+  char *const device_arr_ptr =
+      reinterpret_cast<char *>(vulkan_runtime->get_ti_device()->map(alloc));
+  TI_ASSERT(device_arr_ptr);
+  std::memcpy(device_arr_ptr, data, size);
+  vulkan_runtime->get_ti_device()->unmap(alloc);
+}
 #include <unistd.h>
 int main() {
     // Init gl window
@@ -87,8 +98,10 @@ int main() {
     alloc_params.usage = taichi::lang::AllocUsage::Storage;
 
     alloc_params.size = NR_PARTICLES * sizeof(int);
+    alloc_params.host_write = alloc_params.host_read = true;
     taichi::lang::DeviceAllocation devalloc_N = device_->allocate_memory(alloc_params);
     auto N = taichi::lang::Ndarray(devalloc_N, taichi::lang::PrimitiveType::i32, {NR_PARTICLES});
+    alloc_params.host_write = alloc_params.host_read = false;
 
     alloc_params.size = NR_PARTICLES * sizeof(float);
     taichi::lang::DeviceAllocation devalloc_den = device_->allocate_memory(alloc_params);
@@ -103,12 +116,27 @@ int main() {
     auto vel = taichi::lang::Ndarray(devalloc_vel, taichi::lang::PrimitiveType::f32, {NR_PARTICLES}, {3});
     taichi::lang::DeviceAllocation devalloc_acc = device_->allocate_memory(alloc_params);
     auto acc = taichi::lang::Ndarray(devalloc_acc, taichi::lang::PrimitiveType::f32, {NR_PARTICLES}, {3});
+    alloc_params.host_write = alloc_params.host_read = true;
     taichi::lang::DeviceAllocation devalloc_boundary_box = device_->allocate_memory(alloc_params);
     auto boundary_box = taichi::lang::Ndarray(devalloc_boundary_box, taichi::lang::PrimitiveType::f32, {NR_PARTICLES}, {3});
     taichi::lang::DeviceAllocation devalloc_spawn_box = device_->allocate_memory(alloc_params);
     auto spawn_box = taichi::lang::Ndarray(devalloc_spawn_box, taichi::lang::PrimitiveType::f32, {NR_PARTICLES}, {3});
     taichi::lang::DeviceAllocation devalloc_gravity = device_->allocate_memory(alloc_params);
     auto gravity = taichi::lang::Ndarray(devalloc_gravity, taichi::lang::PrimitiveType::f32, {NR_PARTICLES}, {3});
+    alloc_params.host_write = alloc_params.host_read = false;
+
+
+    // Initialize necessary data
+    float* boundary_box_data = new float[6]{0.0, 0.0, 0.0, 1.0, 1.0, 1.0};
+    float* spawn_box_data = new float[6]{0.3, 0.3, 0.3, 0.7, 0.7, 0.7};
+    int* N_data = new int[3]{20, 20, 20};
+    set_data(vulkan_runtime.get(), devalloc_boundary_box, (void*)boundary_box_data, 6*sizeof(float));
+    set_data(vulkan_runtime.get(), devalloc_spawn_box, (void*)spawn_box_data, 6*sizeof(float));
+    set_data(vulkan_runtime.get(), devalloc_N, (void*)N_data, 3*sizeof(int));
+    delete[] boundary_box_data;
+    delete[] spawn_box_data;
+    delete[] N_data;
+
 
     std::unordered_map<std::string, taichi::lang::aot::IValue> args;
     args.insert({"pos", taichi::lang::aot::IValue::create(pos)});
@@ -118,7 +146,6 @@ int main() {
 
     g_init->run(args);
     vulkan_runtime->synchronize();
-
 
     // Create a GUI even though it's not used in our case (required to
     // render the renderer)
@@ -153,6 +180,7 @@ int main() {
     args.insert({"gravity", taichi::lang::aot::IValue::create(gravity)});
     args.insert({"boundary_box", taichi::lang::aot::IValue::create(boundary_box)});
 
+    // sleep(10);
     int count = 0;
     while (!glfwWindowShouldClose(window)) {
         g_update->run(args);
