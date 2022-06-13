@@ -2,7 +2,7 @@
 #include <iostream>
 #include <chrono>
 
-#include <taichi/backends/vulkan/vulkan_program.h>
+#include <taichi/runtime/program_impls/vulkan/vulkan_program.h>
 #include <taichi/backends/vulkan/vulkan_common.h>
 #include <taichi/backends/vulkan/vulkan_loader.h>
 #include <taichi/runtime/gfx/aot_module_loader_impl.h>
