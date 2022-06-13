@@ -13,7 +13,7 @@
 #include <taichi/ui/backends/vulkan/renderer.h>
 
 #define NX 512
-#define NY 512
+#define NY 1024
 void get_data(
     taichi::lang::gfx::GfxRuntime *vulkan_runtime,
     taichi::lang::DeviceAllocation &alloc,

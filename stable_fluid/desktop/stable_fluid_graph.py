@@ -12,7 +12,8 @@ import taichi as ti
 
 ti.init(arch=ti.vulkan)
 
-res = 512
+NX = 512
+NY = 1024
 dt = 0.03
 p_jacobi_iters = 500  # 40 for a quicker but less accurate result
 f_strength = 10000.0
@@ -20,7 +21,6 @@ curl_strength = 0
 time_c = 2
 maxfps = 60
 dye_decay = 1 - 1 / (maxfps * time_c)
-force_radius = res / 2.0
 gravity = True
 paused = False
 
@@ -37,7 +37,8 @@ class TexPair:
 @ti.func
 def sample(qf: ti.template(), u, v):
     I = ti.Vector([int(u), int(v)])
-    I = max(0, min(res - 1, I))
+    N = ti.Vector([qf.shape[0], qf.shape[1]])
+    I = max(0, min(N - 1, I))
     return qf[I]
 
 
@@ -89,13 +90,14 @@ def apply_impulse(vf: ti.types.ndarray(field_dim=2),
                   dyef: ti.types.ndarray(field_dim=2),
                   imp_data: ti.types.ndarray(field_dim=1)):
     g_dir = -ti.Vector([0, 9.8]) * 300
+    NX = vf.shape[0]
     for i, j in vf:
         omx, omy = imp_data[2], imp_data[3]
         mdir = ti.Vector([imp_data[0], imp_data[1]])
         dx, dy = (i + 0.5 - omx), (j + 0.5 - omy)
         d2 = dx * dx + dy * dy
         # dv = F * dt
-        factor = ti.exp(-d2 / force_radius)
+        factor = ti.exp(-d2 / NX * 2)
 
         dc = dyef[i, j]
         a = dc.norm()
@@ -106,7 +108,7 @@ def apply_impulse(vf: ti.types.ndarray(field_dim=2),
         vf[i, j] = v + momentum
         # add dye
         if mdir.norm() > 0.5:
-            dc += ti.exp(-d2 * (4 / (res / 15)**2)) * ti.Vector(
+            dc += ti.exp(-d2 * (4 / (NX/ 15)**2)) * ti.Vector(
                 [imp_data[4], imp_data[5], imp_data[6]])
 
         dyef[i, j] = dc
@@ -115,6 +117,8 @@ def apply_impulse(vf: ti.types.ndarray(field_dim=2),
 @ti.kernel
 def divergence(vf: ti.types.ndarray(field_dim=2),
                velocity_divs: ti.types.ndarray(field_dim=2)):
+    NX = vf.shape[0]
+    NY = vf.shape[1]
     for i, j in vf:
         vl = sample(vf, i - 1, j)
         vr = sample(vf, i + 1, j)
@@ -123,11 +127,11 @@ def divergence(vf: ti.types.ndarray(field_dim=2),
         vc = sample(vf, i, j)
         if i == 0:
             vl.x = -vc.x
-        if i == res - 1:
+        if i == NX - 1:
             vr.x = -vc.x
         if j == 0:
             vb.y = -vc.y
-        if j == res - 1:
+        if j == NY - 1:
             vt.y = -vc.y
         velocity_divs[i, j] = (vr.x - vl.x + vt.y - vb.y) * 0.5
 
@@ -191,7 +195,7 @@ class MouseDataGen(object):
         # [4:7]: color
         mouse_data = np.zeros(8, dtype=np.float32)
         if window.is_pressed(ti.ui.LMB):
-            mxy = np.array(window.get_cursor_pos(), dtype=np.float32) * res
+            mxy = np.array(window.get_cursor_pos(), dtype=np.float32) * np.array([NX, NY])
             if self.prev_mouse is None:
                 self.prev_mouse = mxy
                 # Set lower bound to 0.3 to prevent too dark colors
@@ -245,21 +249,21 @@ if __name__ == "__main__":
     parser.add_argument('--baseline', action='store_true')
     args, unknown = parser.parse_known_args()
 
-    window = ti.ui.Window('Stable Fluid', (res, res))
+    window = ti.ui.Window('Stable Fluid', (NX, NY))
     canvas = window.get_canvas()
     md_gen = MouseDataGen()
 
-    staging_img = ti.Vector.field(4, ti.u8, shape=(res, res))
+    staging_img = ti.Vector.field(4, ti.u8, shape=(NX, NY))
 
-    _velocities = ti.Vector.ndarray(2, float, shape=(res, res))
-    _new_velocities = ti.Vector.ndarray(2, float, shape=(res, res))
-    _velocity_divs = ti.ndarray(float, shape=(res, res))
-    velocity_curls = ti.ndarray(float, shape=(res, res))
-    _pressures = ti.ndarray(float, shape=(res, res))
-    _new_pressures = ti.ndarray(float, shape=(res, res))
-    _dye_buffer = ti.Vector.ndarray(3, float, shape=(res, res))
-    _new_dye_buffer = ti.Vector.ndarray(3, float, shape=(res, res))
-    _dye_image_buffer = ti.Vector.ndarray(4, dtype=ti.f32, shape=(res, res))
+    _velocities = ti.Vector.ndarray(2, float, shape=(NX, NY))
+    _new_velocities = ti.Vector.ndarray(2, float, shape=(NX, NY))
+    _velocity_divs = ti.ndarray(float, shape=(NX, NY))
+    velocity_curls = ti.ndarray(float, shape=(NX, NY))
+    _pressures = ti.ndarray(float, shape=(NX, NY))
+    _new_pressures = ti.ndarray(float, shape=(NX, NY))
+    _dye_buffer = ti.Vector.ndarray(3, float, shape=(NX, NY))
+    _new_dye_buffer = ti.Vector.ndarray(3, float, shape=(NX, NY))
+    _dye_image_buffer = ti.Vector.ndarray(4, dtype=ti.f32, shape=(NX, NY))
 
     if args.baseline:
         velocities_pair = TexPair(_velocities, _new_velocities)

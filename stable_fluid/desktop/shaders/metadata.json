@@ -212,4 +212,4 @@
           "bind_index": 0}}}},
   "kernel_tmpls": {},
   "fields": [],
-  "root_buffer_size": 1048576}}
+  "root_buffer_size": 2097152}}
