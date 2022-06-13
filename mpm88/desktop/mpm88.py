@@ -2,14 +2,11 @@ import taichi as ti
 import tempfile
 
 ti.init(ti.vulkan)
-n_particles = 8192
+n_particles = 8192 * 5
 n_grid = 128
-dx = 1 / n_grid
 dt = 2e-4
 
 p_rho = 1
-p_vol = (dx * 0.5)**2
-p_mass = p_vol * p_rho
 gravity = 9.8
 bound = 3
 E = 400
@@ -26,6 +23,9 @@ def substep_p2g(x: ti.any_arr(field_dim=1), v: ti.any_arr(field_dim=1),
                 C: ti.any_arr(field_dim=1), J: ti.any_arr(field_dim=1),
                 grid_v: ti.any_arr(field_dim=2),
                 grid_m: ti.any_arr(field_dim=2)):
+    dx = 1 / grid_v.shape[0]
+    p_vol = (dx * 0.5)**2
+    p_mass = p_vol * p_rho
     for p in x:
         Xp = x[p] / dx
         base = int(Xp - 0.5)
@@ -44,23 +44,25 @@ def substep_p2g(x: ti.any_arr(field_dim=1), v: ti.any_arr(field_dim=1),
 @ti.kernel
 def substep_update_grid_v(grid_v: ti.any_arr(field_dim=2),
                           grid_m: ti.any_arr(field_dim=2)):
+    num_grid = grid_v.shape[0]
     for i, j in grid_m:
         if grid_m[i, j] > 0:
             grid_v[i, j] /= grid_m[i, j]
         grid_v[i, j].y -= dt * gravity
         if i < bound and grid_v[i, j].x < 0:
             grid_v[i, j].x = 0
-        if i > n_grid - bound and grid_v[i, j].x > 0:
+        if i > num_grid - bound and grid_v[i, j].x > 0:
             grid_v[i, j].x = 0
         if j < bound and grid_v[i, j].y < 0:
             grid_v[i, j].y = 0
-        if j > n_grid - bound and grid_v[i, j].y > 0:
+        if j > num_grid - bound and grid_v[i, j].y > 0:
             grid_v[i, j].y = 0
 
 @ti.kernel
 def substep_g2p(x: ti.any_arr(field_dim=1), v: ti.any_arr(field_dim=1),
                 C: ti.any_arr(field_dim=1), J: ti.any_arr(field_dim=1),
                 grid_v: ti.any_arr(field_dim=2), pos: ti.any_arr(field_dim=1)):
+    dx = 1 / grid_v.shape[0]
     for p in x:
         Xp = x[p] / dx
         base = int(Xp - 0.5)
@@ -84,7 +86,7 @@ def substep_g2p(x: ti.any_arr(field_dim=1), v: ti.any_arr(field_dim=1),
 @ti.kernel
 def init_particles(x: ti.any_arr(field_dim=1), v: ti.any_arr(field_dim=1),
                    J: ti.any_arr(field_dim=1)):
-    for i in range(n_particles):
+    for i in range(x.shape[0]):
         x[i] = [ti.random() * 0.4 + 0.2, ti.random() * 0.4 + 0.2]
         v[i] = [0, -1]
         J[i] = 1
@@ -169,8 +171,6 @@ with tempfile.TemporaryDirectory() as tmpdir:
 #        'grid_m': grid_m,
 #        'pos': pos,
 #    })
-#    print(pos.to_numpy())
-#    print(x.to_numpy())
 #    gui.clear(0x112F41)
 #    gui.circles(x.to_numpy(), radius=1.5, color=0x068587)
 #    gui.show()

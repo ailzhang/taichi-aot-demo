@@ -12,7 +12,7 @@
 #include <taichi/gui/gui.h>
 #include <taichi/ui/backends/vulkan/renderer.h>
 
-#define NR_PARTICLES 8192
+#define NR_PARTICLES (8192*8)
 #define N_GRID 128
 void get_data(
     taichi::lang::gfx::GfxRuntime *vulkan_runtime,
