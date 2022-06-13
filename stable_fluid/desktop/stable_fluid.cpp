@@ -46,7 +46,7 @@ int main() {
     // Init gl window
     glfwInit();
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-    GLFWwindow* window = glfwCreateWindow(512, 512, "Taichi show", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(NX, NY, "Taichi show", NULL, NULL);
     if (window == NULL) {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
