@@ -1,0 +1,215 @@
+{
+"aot_data": {
+  "kernels": {"dye_to_image_c66_0_k0011_vk": {
+      "tasks": [{
+          "type": "range_for",
+          "range_hint": "",
+          "name": "dye_to_image_c66_0_k0011_vk_0_t00",
+          "source_path": "shaders/dye_to_image_c66_0_k0011_vk_0_t00.spv",
+          "gpu_block_size": 128,
+          "buffer_binds": [{
+              "buffer": {
+                "type": 2,
+                "id": -1},
+              "binding": 0}]}],
+      "args_count": 2,
+      "rets_count": 0,
+      "args_buffer_size": 16,
+      "rets_buffer_size": 0,
+      "scalar_args": {},
+      "arr_args": {"1": {
+          "dtype_name": "f32",
+          "field_dim": 2,
+          "element_shape": [4],
+          "shape_offset_in_args_buf": 4,
+          "bind_index": 0},"0": {
+          "dtype_name": "f32",
+          "field_dim": 2,
+          "element_shape": [3],
+          "shape_offset_in_args_buf": 0,
+          "bind_index": 0}}},"subtract_gradient_c64_0_k0010_vk": {
+      "tasks": [{
+          "type": "range_for",
+          "range_hint": "",
+          "name": "subtract_gradient_c64_0_k0010_vk_0_t00",
+          "source_path": "shaders/subtract_gradient_c64_0_k0010_vk_0_t00.spv",
+          "gpu_block_size": 128,
+          "buffer_binds": [{
+              "buffer": {
+                "type": 2,
+                "id": -1},
+              "binding": 0}]}],
+      "args_count": 2,
+      "rets_count": 0,
+      "args_buffer_size": 16,
+      "rets_buffer_size": 0,
+      "scalar_args": {},
+      "arr_args": {"1": {
+          "dtype_name": "f32",
+          "field_dim": 2,
+          "element_shape": [],
+          "shape_offset_in_args_buf": 4,
+          "bind_index": 0},"0": {
+          "dtype_name": "f32",
+          "field_dim": 2,
+          "element_shape": [2],
+          "shape_offset_in_args_buf": 0,
+          "bind_index": 0}}},"advect_c56_0_k0001_vk": {
+      "tasks": [{
+          "type": "range_for",
+          "range_hint": "",
+          "name": "advect_c56_0_k0001_vk_0_t00",
+          "source_path": "shaders/advect_c56_0_k0001_vk_0_t00.spv",
+          "gpu_block_size": 128,
+          "buffer_binds": [{
+              "buffer": {
+                "type": 2,
+                "id": -1},
+              "binding": 0}]}],
+      "args_count": 3,
+      "rets_count": 0,
+      "args_buffer_size": 24,
+      "rets_buffer_size": 0,
+      "scalar_args": {},
+      "arr_args": {"2": {
+          "dtype_name": "f32",
+          "field_dim": 2,
+          "element_shape": [2],
+          "shape_offset_in_args_buf": 8,
+          "bind_index": 0},"0": {
+          "dtype_name": "f32",
+          "field_dim": 2,
+          "element_shape": [2],
+          "shape_offset_in_args_buf": 0,
+          "bind_index": 0},"1": {
+          "dtype_name": "f32",
+          "field_dim": 2,
+          "element_shape": [2],
+          "shape_offset_in_args_buf": 4,
+          "bind_index": 0}}},"divergence_c60_0_k0008_vk": {
+      "tasks": [{
+          "type": "range_for",
+          "range_hint": "",
+          "name": "divergence_c60_0_k0008_vk_0_t00",
+          "source_path": "shaders/divergence_c60_0_k0008_vk_0_t00.spv",
+          "gpu_block_size": 128,
+          "buffer_binds": [{
+              "buffer": {
+                "type": 2,
+                "id": -1},
+              "binding": 0}]}],
+      "args_count": 2,
+      "rets_count": 0,
+      "args_buffer_size": 16,
+      "rets_buffer_size": 0,
+      "scalar_args": {},
+      "arr_args": {"1": {
+          "dtype_name": "f32",
+          "field_dim": 2,
+          "element_shape": [],
+          "shape_offset_in_args_buf": 4,
+          "bind_index": 0},"0": {
+          "dtype_name": "f32",
+          "field_dim": 2,
+          "element_shape": [2],
+          "shape_offset_in_args_buf": 0,
+          "bind_index": 0}}},"apply_impulse_c58_0_k0007_vk": {
+      "tasks": [{
+          "type": "range_for",
+          "range_hint": "",
+          "name": "apply_impulse_c58_0_k0007_vk_0_t00",
+          "source_path": "shaders/apply_impulse_c58_0_k0007_vk_0_t00.spv",
+          "gpu_block_size": 128,
+          "buffer_binds": [{
+              "buffer": {
+                "type": 2,
+                "id": -1},
+              "binding": 0}]}],
+      "args_count": 3,
+      "rets_count": 0,
+      "args_buffer_size": 24,
+      "rets_buffer_size": 0,
+      "scalar_args": {},
+      "arr_args": {"2": {
+          "dtype_name": "f32",
+          "field_dim": 1,
+          "element_shape": [],
+          "shape_offset_in_args_buf": 8,
+          "bind_index": 0},"0": {
+          "dtype_name": "f32",
+          "field_dim": 2,
+          "element_shape": [2],
+          "shape_offset_in_args_buf": 0,
+          "bind_index": 0},"1": {
+          "dtype_name": "f32",
+          "field_dim": 2,
+          "element_shape": [3],
+          "shape_offset_in_args_buf": 4,
+          "bind_index": 0}}},"advect_c56_1_k0002_vk": {
+      "tasks": [{
+          "type": "range_for",
+          "range_hint": "",
+          "name": "advect_c56_1_k0002_vk_0_t00",
+          "source_path": "shaders/advect_c56_1_k0002_vk_0_t00.spv",
+          "gpu_block_size": 128,
+          "buffer_binds": [{
+              "buffer": {
+                "type": 2,
+                "id": -1},
+              "binding": 0}]}],
+      "args_count": 3,
+      "rets_count": 0,
+      "args_buffer_size": 24,
+      "rets_buffer_size": 0,
+      "scalar_args": {},
+      "arr_args": {"2": {
+          "dtype_name": "f32",
+          "field_dim": 2,
+          "element_shape": [3],
+          "shape_offset_in_args_buf": 8,
+          "bind_index": 0},"0": {
+          "dtype_name": "f32",
+          "field_dim": 2,
+          "element_shape": [2],
+          "shape_offset_in_args_buf": 0,
+          "bind_index": 0},"1": {
+          "dtype_name": "f32",
+          "field_dim": 2,
+          "element_shape": [3],
+          "shape_offset_in_args_buf": 4,
+          "bind_index": 0}}},"pressure_jacobi_c62_0_k0009_vk": {
+      "tasks": [{
+          "type": "range_for",
+          "range_hint": "",
+          "name": "pressure_jacobi_c62_0_k0009_vk_0_t00",
+          "source_path": "shaders/pressure_jacobi_c62_0_k0009_vk_0_t00.spv",
+          "gpu_block_size": 128,
+          "buffer_binds": [{
+              "buffer": {
+                "type": 2,
+                "id": -1},
+              "binding": 0}]}],
+      "args_count": 3,
+      "rets_count": 0,
+      "args_buffer_size": 24,
+      "rets_buffer_size": 0,
+      "scalar_args": {},
+      "arr_args": {"2": {
+          "dtype_name": "f32",
+          "field_dim": 2,
+          "element_shape": [],
+          "shape_offset_in_args_buf": 8,
+          "bind_index": 0},"0": {
+          "dtype_name": "f32",
+          "field_dim": 2,
+          "element_shape": [],
+          "shape_offset_in_args_buf": 0,
+          "bind_index": 0},"1": {
+          "dtype_name": "f32",
+          "field_dim": 2,
+          "element_shape": [],
+          "shape_offset_in_args_buf": 4,
+          "bind_index": 0}}}},
+  "kernel_tmpls": {},
+  "fields": [],
+  "root_buffer_size": 1048576}}
