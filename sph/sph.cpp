@@ -206,5 +206,8 @@ int main() {
     device_->dealloc_memory(devalloc_spawn_box);
     device_->dealloc_memory(devalloc_gravity);
 
+    vulkan_runtime.reset();
+    renderer->cleanup();
+
     return 0;
 }

@@ -179,5 +179,8 @@ int main() {
     device_->dealloc_memory(devalloc_grid_m);
     device_->dealloc_memory(devalloc_pos);
 
+    vulkan_runtime.reset();
+    renderer->cleanup();
+
     return 0;
 }

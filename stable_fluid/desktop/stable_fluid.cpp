@@ -220,5 +220,8 @@ int main() {
     device_->dealloc_memory(devalloc_mouse_data);
     device_->dealloc_memory(devalloc_dye_image);
 
+    vulkan_runtime.reset();
+    renderer->cleanup();
+
     return 0;
 }
