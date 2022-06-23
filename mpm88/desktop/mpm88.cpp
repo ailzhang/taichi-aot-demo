@@ -16,14 +16,23 @@ namespace {
 constexpr int kNrParticles = 8192 * 2;
 constexpr int kNGrid = 128;
 
-void ReadDataToHost(taichi::lang::gfx::GfxRuntime *vulkan_runtime,
-                    taichi::lang::DeviceAllocation &alloc, void *data,
+template <typename T>
+void ReadDataToHost(taichi::lang::DeviceAllocation &alloc, T *data,
                     size_t size) {
+  taichi::lang::Device::AllocParams alloc_params;
+  alloc_params.host_write = false;
+  alloc_params.host_read = true;
+  alloc_params.size = size;
+  alloc_params.usage = taichi::lang::AllocUsage::Storage;
+  auto staging_buf = alloc.device->allocate_memory(alloc_params);
+  alloc.device->memcpy_internal(staging_buf.get_ptr(), alloc.get_ptr(), size);
+
   char *const device_arr_ptr =
-      reinterpret_cast<char *>(vulkan_runtime->get_ti_device()->map(alloc));
+      reinterpret_cast<char *>(alloc.device->map(staging_buf));
   TI_ASSERT(device_arr_ptr);
   std::memcpy(data, device_arr_ptr, size);
-  vulkan_runtime->get_ti_device()->unmap(alloc);
+  alloc.device->unmap(staging_buf);
+  alloc.device->dealloc_memory(staging_buf);
 }
 } // namespace
 
@@ -83,6 +92,11 @@ public:
   void Reset() {
     g_init_->run(args_);
     vulkan_runtime->synchronize();
+
+    // For debugging
+    float arr[kNrParticles * 2];
+    ReadDataToHost<float>(x_->devalloc(), arr, kNrParticles * 2 * sizeof(float));
+    std::cout << arr[1] << std::endl;
   }
 
   void Step() {
