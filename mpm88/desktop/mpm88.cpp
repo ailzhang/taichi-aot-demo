@@ -12,18 +12,27 @@
 #include <taichi/gui/gui.h>
 #include <taichi/ui/backends/vulkan/renderer.h>
 
-#define NR_PARTICLES (8192*8)
+#define NR_PARTICLES (8192*2)
 #define N_GRID 128
 void get_data(
-    taichi::lang::gfx::GfxRuntime *vulkan_runtime,
     taichi::lang::DeviceAllocation &alloc,
     void *data,
     size_t size) {
+
+  taichi::lang::Device::AllocParams alloc_params;
+  alloc_params.host_write = false;
+  alloc_params.host_read = true;
+  alloc_params.size = size;
+  alloc_params.usage = taichi::lang::AllocUsage::Storage;
+  auto staging_buf = alloc.device->allocate_memory(alloc_params);
+  alloc.device->memcpy_internal(staging_buf.get_ptr(), alloc.get_ptr(), size);
+
   char *const device_arr_ptr =
-      reinterpret_cast<char *>(vulkan_runtime->get_ti_device()->map(alloc));
+      reinterpret_cast<char *>(alloc.device->map(staging_buf));
   TI_ASSERT(device_arr_ptr);
   std::memcpy(data, device_arr_ptr, size);
-  vulkan_runtime->get_ti_device()->unmap(alloc);
+  alloc.device->unmap(staging_buf);
+  alloc.device->dealloc_memory(staging_buf);
 }
 #include <unistd.h>
 int main() {
@@ -90,9 +99,6 @@ int main() {
     taichi::lang::DeviceAllocation devalloc_x = device_->allocate_memory(alloc_params);
     auto x = taichi::lang::Ndarray(devalloc_x, taichi::lang::PrimitiveType::f32, {NR_PARTICLES}, {2});
 
-    // For debugging
-    //float arr[NR_PARTICLES * 2];
-
     taichi::lang::DeviceAllocation devalloc_v = device_->allocate_memory(alloc_params);
     auto v = taichi::lang::Ndarray(devalloc_v, taichi::lang::PrimitiveType::f32, {NR_PARTICLES}, {2});
 
@@ -124,6 +130,11 @@ int main() {
 
     g_init->run(args);
     vulkan_runtime->synchronize();
+
+    // For debugging
+    float arr[NR_PARTICLES * 2];
+    get_data(devalloc_x, arr, NR_PARTICLES *2 *sizeof(float));
+    std::cout << arr[0] <<std::endl;
 
 
     // Create a GUI even though it's not used in our case (required to

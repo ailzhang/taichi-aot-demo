@@ -16,7 +16,7 @@ endif()
 set(TAICHI_REPO_DIR $ENV{TAICHI_REPO_DIR})
 
 target_include_directories(mpm88 PUBLIC ${TAICHI_REPO_DIR}/)
-target_include_directories(mpm88 PUBLIC ${TAICHI_REPO_DIR}/taichi/backends/vulkan)
+target_include_directories(mpm88 SYSTEM PRIVATE ${TAICHI_REPO_DIR}/taichi/backends/vulkan)
 target_include_directories(mpm88 PUBLIC ${TAICHI_REPO_DIR}/external/Vulkan-Headers/include/)
 target_include_directories(mpm88 PUBLIC ${TAICHI_REPO_DIR}/external/SPIRV-Tools/include/)
 target_include_directories(mpm88 PUBLIC ${TAICHI_REPO_DIR}/external/volk/)
