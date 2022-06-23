@@ -17,7 +17,7 @@ constexpr int kNrParticles = 8192 * 2;
 constexpr int kNGrid = 128;
 
 template <typename T>
-void ReadDataToHost(taichi::lang::DeviceAllocation &alloc, T *data,
+std::vector<T> ReadDataToHost(taichi::lang::DeviceAllocation &alloc,
                     size_t size) {
   taichi::lang::Device::AllocParams alloc_params;
   alloc_params.host_write = false;
@@ -30,9 +30,14 @@ void ReadDataToHost(taichi::lang::DeviceAllocation &alloc, T *data,
   char *const device_arr_ptr =
       reinterpret_cast<char *>(alloc.device->map(staging_buf));
   TI_ASSERT(device_arr_ptr);
-  std::memcpy(data, device_arr_ptr, size);
+
+  size_t n = size /  sizeof(T);
+  std::vector<T> arr(n);
+
+  std::memcpy(arr.data(), device_arr_ptr, size);
   alloc.device->unmap(staging_buf);
   alloc.device->dealloc_memory(staging_buf);
+  return arr;
 }
 } // namespace
 
@@ -94,9 +99,10 @@ public:
     vulkan_runtime->synchronize();
 
     // For debugging
-    float arr[kNrParticles * 2];
-    ReadDataToHost<float>(x_->devalloc(), arr, kNrParticles * 2 * sizeof(float));
-    std::cout << arr[1] << std::endl;
+    //auto arr = ReadDataToHost<float>(x_->devalloc(), x_->ndarray().get_nelement() * x_->ndarray().get_element_size());
+    //for (int i = 0; i < arr.size(); i++) {
+    //  std::cout << arr[i] << std::endl;
+    //}
   }
 
   void Step() {
