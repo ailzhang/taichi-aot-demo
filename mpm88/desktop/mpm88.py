@@ -23,10 +23,10 @@ def substep_p2g(x: ti.any_arr(field_dim=1), v: ti.any_arr(field_dim=1),
                 C: ti.any_arr(field_dim=1), J: ti.any_arr(field_dim=1),
                 grid_v: ti.any_arr(field_dim=2),
                 grid_m: ti.any_arr(field_dim=2)):
-    dx = 1 / grid_v.shape[0]
-    p_vol = (dx * 0.5)**2
-    p_mass = p_vol * p_rho
     for p in x:
+        dx = 1 / grid_v.shape[0]
+        p_vol = (dx * 0.5)**2
+        p_mass = p_vol * p_rho
         Xp = x[p] / dx
         base = int(Xp - 0.5)
         fx = Xp - base
@@ -44,8 +44,8 @@ def substep_p2g(x: ti.any_arr(field_dim=1), v: ti.any_arr(field_dim=1),
 @ti.kernel
 def substep_update_grid_v(grid_v: ti.any_arr(field_dim=2),
                           grid_m: ti.any_arr(field_dim=2)):
-    num_grid = grid_v.shape[0]
     for i, j in grid_m:
+        num_grid = grid_v.shape[0]
         if grid_m[i, j] > 0:
             grid_v[i, j] /= grid_m[i, j]
         grid_v[i, j].y -= dt * gravity
@@ -62,8 +62,8 @@ def substep_update_grid_v(grid_v: ti.any_arr(field_dim=2),
 def substep_g2p(x: ti.any_arr(field_dim=1), v: ti.any_arr(field_dim=1),
                 C: ti.any_arr(field_dim=1), J: ti.any_arr(field_dim=1),
                 grid_v: ti.any_arr(field_dim=2), pos: ti.any_arr(field_dim=1)):
-    dx = 1 / grid_v.shape[0]
     for p in x:
+        dx = 1 / grid_v.shape[0]
         Xp = x[p] / dx
         base = int(Xp - 0.5)
         fx = Xp - base
@@ -174,4 +174,3 @@ with tempfile.TemporaryDirectory() as tmpdir:
 #    gui.clear(0x112F41)
 #    gui.circles(x.to_numpy(), radius=1.5, color=0x068587)
 #    gui.show()
-
