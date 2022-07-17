@@ -3,8 +3,8 @@
 #include <chrono>
 
 #include <taichi/runtime/program_impls/vulkan/vulkan_program.h>
-#include <taichi/backends/vulkan/vulkan_common.h>
-#include <taichi/backends/vulkan/vulkan_loader.h>
+#include <taichi/rhi/vulkan/vulkan_common.h>
+#include <taichi/rhi/vulkan/vulkan_loader.h>
 #include <taichi/runtime/gfx/aot_module_loader_impl.h>
 #include <taichi/aot/graph_data.h>
 #include <inttypes.h>
