@@ -200,15 +200,15 @@ if __name__ == "__main__":
         print('running in graph mode')
 
         # Build graph
-        sym_N = ti.graph.Arg(ti.graph.ArgKind.NDARRAY, 'N', ti.i32, element_shape=())
-        sym_pos = ti.graph.Arg(ti.graph.ArgKind.NDARRAY, 'pos', ti.f32, element_shape=(3, ))
-        sym_vel = ti.graph.Arg(ti.graph.ArgKind.NDARRAY, 'vel', ti.f32, element_shape=(3, ))
-        sym_acc = ti.graph.Arg(ti.graph.ArgKind.NDARRAY, 'acc', ti.f32, element_shape=(3, ))
-        sym_den = ti.graph.Arg(ti.graph.ArgKind.NDARRAY, 'den', ti.f32, element_shape=())
-        sym_pre= ti.graph.Arg(ti.graph.ArgKind.NDARRAY, 'pre', ti.f32, element_shape=())
-        sym_boundary_box = ti.graph.Arg(ti.graph.ArgKind.NDARRAY, 'boundary_box', ti.f32, element_shape=(3, ))
-        sym_spawn_box = ti.graph.Arg(ti.graph.ArgKind.NDARRAY, 'spawn_box', ti.f32, element_shape=(3, ))
-        sym_gravity = ti.graph.Arg(ti.graph.ArgKind.NDARRAY, 'gravity', ti.f32, element_shape=(3, ))
+        sym_N = ti.graph.Arg(ti.graph.ArgKind.NDARRAY, 'N', ti.i32, field_dim=1, element_shape=())
+        sym_pos = ti.graph.Arg(ti.graph.ArgKind.NDARRAY, 'pos', ti.f32, field_dim=1, element_shape=(3, ))
+        sym_vel = ti.graph.Arg(ti.graph.ArgKind.NDARRAY, 'vel', ti.f32, field_dim=1, element_shape=(3, ))
+        sym_acc = ti.graph.Arg(ti.graph.ArgKind.NDARRAY, 'acc', ti.f32, field_dim=1, element_shape=(3, ))
+        sym_den = ti.graph.Arg(ti.graph.ArgKind.NDARRAY, 'den', ti.f32, field_dim=1, element_shape=())
+        sym_pre= ti.graph.Arg(ti.graph.ArgKind.NDARRAY, 'pre', ti.f32, field_dim=1, element_shape=())
+        sym_boundary_box = ti.graph.Arg(ti.graph.ArgKind.NDARRAY, 'boundary_box', ti.f32, field_dim=1, element_shape=(3, ))
+        sym_spawn_box = ti.graph.Arg(ti.graph.ArgKind.NDARRAY, 'spawn_box', ti.f32, field_dim=1, element_shape=(3, ))
+        sym_gravity = ti.graph.Arg(ti.graph.ArgKind.NDARRAY, 'gravity', ti.f32, field_dim=0, element_shape=(3, ))
 
 
         g_init_builder = ti.graph.GraphBuilder()
