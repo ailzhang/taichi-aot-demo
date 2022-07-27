@@ -38,7 +38,7 @@
               "binding": 2}]}],
       "args_count": 3,
       "rets_count": 0,
-      "args_buffer_size": 24,
+      "args_buffer_size": 12,
       "rets_buffer_size": 0,
       "scalar_args": {},
       "arr_args": {"2": {
@@ -84,7 +84,7 @@
               "binding": 0}]}],
       "args_count": 3,
       "rets_count": 0,
-      "args_buffer_size": 24,
+      "args_buffer_size": 12,
       "rets_buffer_size": 0,
       "scalar_args": {},
       "arr_args": {"2": {
@@ -106,8 +106,8 @@
       "tasks": [{
           "type": "serial",
           "range_hint": "",
-          "name": "blur_c60_0_k0003_vk_0_t00",
-          "source_path": "./blur_c60_0_k0003_vk_0_t00.spv",
+          "name": "blur_c60_0_k0004_vk_0_t00",
+          "source_path": "./blur_c60_0_k0004_vk_0_t00.spv",
           "gpu_block_size": 1,
           "buffer_binds": [{
               "buffer": {
@@ -124,8 +124,8 @@
               "binding": 0}]},{
           "type": "range_for",
           "range_hint": "",
-          "name": "blur_c60_0_k0003_vk_1_t01",
-          "source_path": "./blur_c60_0_k0003_vk_1_t01.spv",
+          "name": "blur_c60_0_k0004_vk_1_t01",
+          "source_path": "./blur_c60_0_k0004_vk_1_t01.spv",
           "gpu_block_size": 128,
           "buffer_binds": [{
               "buffer": {
@@ -138,8 +138,8 @@
               "binding": 2}]},{
           "type": "range_for",
           "range_hint": "",
-          "name": "blur_c60_0_k0003_vk_2_t02",
-          "source_path": "./blur_c60_0_k0003_vk_2_t02.spv",
+          "name": "blur_c60_0_k0004_vk_2_t02",
+          "source_path": "./blur_c60_0_k0004_vk_2_t02.spv",
           "gpu_block_size": 128,
           "buffer_binds": [{
               "buffer": {
@@ -152,7 +152,7 @@
               "binding": 2}]}],
       "args_count": 4,
       "rets_count": 0,
-      "args_buffer_size": 32,
+      "args_buffer_size": 16,
       "rets_buffer_size": 0,
       "scalar_args": {},
       "arr_args": {"3": {
@@ -178,4 +178,4 @@
           "bind_index": 0}}}},
   "kernel_tmpls": {},
   "fields": [],
-  "root_buffer_size": 67108872}}
+  "root_buffer_size": 100663304}}

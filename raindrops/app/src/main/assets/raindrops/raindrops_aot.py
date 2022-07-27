@@ -31,6 +31,7 @@ texture_clear_tmp_nd = ti.Vector.ndarray(4, ti.f32, shape=RES_)
 blur_tmp = ti.Vector.ndarray(4, ti.f32, shape=RES_)
 
 img_blur_nd = ti.Vector.ndarray(4, dtype=ti.f32, shape=RES)
+img_blur_field = ti.Vector.field(4, dtype=ti.f32, shape=RES)
 img_clear_nd = ti.Vector.ndarray(4, dtype=ti.f32, shape=RES)
 t = ti.field(ti.f32, shape=())
 rain_dir = ti.ndarray(dtype=ti.f32, shape=(1))
@@ -65,7 +66,7 @@ def load_texture():
     bg_clear_data = np.asarray(bg_clear).astype(np.float32) / 255.0
     texture_clear.from_numpy(bg_clear_data)
 
-def generate_data_header_file_for_aot(texture_np, texture_clear_np):    
+def generate_data_header_file_for_aot(texture_np, texture_clear_np):
     data_header_path = get_rel_path('../../../','framework', 'scene', 'taichi', 'image_data.h')
     code = "const glm::vec4 image_data[2]"
     code += ("[{} * {}]".format(W, H))
@@ -135,7 +136,7 @@ def drop_layer(UV, t, rain_dir:ti.template()):
     r_dir = rain_dir[0]
     uv = rot2(r_dir) @ UV
     # move uv up == move droplets down
-    T = t * 0.75    
+    T = t * 0.75
 
     uv.y += T
 
@@ -210,8 +211,8 @@ def step(img_blur_nd: ti.types.ndarray(), texture_clear_tmp_nd: ti.types.ndarray
     for i, j in img_blur_nd:
         UV = vec2(i / W, j / H)
         uv = (vec2(i, j) - 0.5 * vec2(RES))
-        uv[0] /= W 
-        uv[1] /= H 
+        uv[0] /= W
+        uv[1] /= H
 
         rain_amount = ti.sin(t[None] * 0.05) * 0.3 + 0.7
 
@@ -224,9 +225,9 @@ def step(img_blur_nd: ti.types.ndarray(), texture_clear_tmp_nd: ti.types.ndarray
         cx = drops(uv + e, t[None], static_drops, layer1, layer2, rain_dir)
         cy = drops(uv + e.yx, t[None], static_drops, layer1, layer2, rain_dir)
         n = vec2(cx - c, cy - c)
-        UV += n 
+        UV += n
 
-        uv_ind2 = ivec2([H - int(UV[1] * H) % H, int(UV[0] * W) % W])        
+        uv_ind2 = ivec2([H - int(UV[1] * H) % H, int(UV[0] * W) % W])
         col = sample(uv_ind2, texture_clear_tmp_nd)
 
         img_blur_nd[i, j] = col
@@ -236,27 +237,27 @@ def step(img_blur_nd: ti.types.ndarray(), texture_clear_tmp_nd: ti.types.ndarray
 @ti.kernel
 def blur(src: ti.types.ndarray(), tmp: ti.types.ndarray(), dst: ti.types.ndarray(), stand_derivation:ti.types.ndarray()):
     stdev_squared = stand_derivation[0] * stand_derivation[0]
-    samples[0] = int(4 * stand_derivation[0] + 0.5) + 1
+    samples[0] = ti.min(int(4 * stand_derivation[0] + 0.5) + 1, 20)
     # horizontal blur
     for i, j in tmp:
         _sum = 0.0
         UV = vec2(i, j)
-        uv_ind = ivec2(int(UV[0]), int(UV[1]))  
+        uv_ind = ivec2(int(UV[0]), int(UV[1]))
         gauss = (1.0 / ti.sqrt(2*PI*stdev_squared)) * ti.pow(E, -((0)/(2.0*stdev_squared)))
-      
+
         col = sample(uv_ind, src) * gauss
         _sum += gauss
         for k in range(1, samples[0]):
-            tex_offset_x = 1
+            tex_offset_x = 1.2
             d = vec2(tex_offset_x*k, 0.0)
-            uv_ind = int(UV + d) 
-            uv_ind2 = ivec2(int(uv_ind[0]), int(uv_ind[1]))        
+            uv_ind = int(UV + d)
+            uv_ind2 = ivec2(int(uv_ind[0]), int(uv_ind[1]))
             gauss = (1.0 / ti.sqrt(2*PI*stdev_squared)) * ti.pow(E, -((tex_offset_x*k*tex_offset_x*k)/(2.0*stdev_squared)))
 
             tex = sample((uv_ind2), src)
             col += tex * gauss
-            uv_ind = int(UV - d) 
-            uv_ind2 = ivec2(int(uv_ind[0]), int(uv_ind[1]))        
+            uv_ind = int(UV - d)
+            uv_ind2 = ivec2(int(uv_ind[0]), int(uv_ind[1]))
             _sum += gauss
 
             tex2 = sample(uv_ind2, src)
@@ -265,29 +266,29 @@ def blur(src: ti.types.ndarray(), tmp: ti.types.ndarray(), dst: ti.types.ndarray
 
         tmp[i, j] = col/_sum
 
-    # vertical blur 
+    # vertical blur
     for i, j in dst:
         _sum = 0.0
 
         UV = vec2(i, j)
-        uv_ind = ivec2(int(UV[0]), int(UV[1])) 
+        uv_ind = ivec2(int(UV[0]), int(UV[1]))
         gauss = (1.0 / ti.sqrt(2*PI*stdev_squared)) * ti.pow(E, -((0)/(2.0*stdev_squared)))
-       
+
         col = sample(uv_ind, tmp) * gauss
         _sum += gauss
 
         for k in range(1, samples[0]):
-            tex_offset_y = 1
+            tex_offset_y = 1.2
             d = vec2(0.0, tex_offset_y*k)
-            uv_ind = int(UV + d) 
-            uv_ind2 = ivec2(int(uv_ind[0]), int(uv_ind[1]))        
+            uv_ind = int(UV + d)
+            uv_ind2 = ivec2(int(uv_ind[0]), int(uv_ind[1]))
             gauss = (1.0 / ti.sqrt(2*PI*stdev_squared)) * ti.pow(E, -((tex_offset_y*k*tex_offset_y*k)/(2.0*stdev_squared)))
 
             tex = sample((uv_ind2), tmp)
             col += tex * gauss
 
-            uv_ind = int(UV - d) 
-            uv_ind2 = ivec2(int(uv_ind[0]), int(uv_ind[1]))        
+            uv_ind = int(UV - d)
+            uv_ind2 = ivec2(int(uv_ind[0]), int(uv_ind[1]))
             _sum += gauss
 
             tex2 = sample(uv_ind2, tmp)
@@ -304,14 +305,14 @@ def aot():
                     'texture_clear_nd': texture_clear_nd,
                     'stand_derivation': stand_derivation
                 })
-    m.add_kernel(blur, 
+    m.add_kernel(blur,
                 template_args={
                     'src': texture_clear_nd,
                     'tmp': blur_tmp,
                     'dst': texture_clear_tmp_nd,
                     'stand_derivation': stand_derivation
                     })
-    m.add_kernel(step, 
+    m.add_kernel(step,
                 template_args={
                     'img_blur_nd': img_blur_nd,
                     'texture_clear_tmp_nd': texture_clear_tmp_nd,
@@ -322,6 +323,11 @@ def aot():
     texture_blur_np = texture_blur.to_numpy()
     texture_clear_np = texture_clear.to_numpy()
 
+@ti.kernel
+def copy_to_field(arr: ti.types.ndarray()):
+    for I in ti.grouped(arr):
+        img_blur_field[I] = arr[I]
+
 def main():
     load_texture()
     texture_blur_np = texture_blur.to_numpy()
@@ -331,21 +337,25 @@ def main():
     texture_clear_nd.from_numpy(texture_clear_np)
     # generate_data_header_file_for_aot(texture_blur_np, texture_clear_np)
 
-    gui = ti.GUI('Raindrop', res=RES)
+    # gui = ti.GUI('Raindrop', res=RES)
+    window = ti.ui.Window('Raindrop', RES)
+    canvas = window.get_canvas()
     init(img_clear_nd, texture_clear_nd, stand_derivation)
     t = 0.0
-    for i in range(1):        
+    for i in range(1):
         blur(texture_clear_nd, blur_tmp, texture_clear_tmp_nd, stand_derivation)
 
-    while gui.running:
+    while window.running:
         rain_dir[0] = abs(sin(t * 0.1)) * pi / 4
         t += 0.01
         stand_derivation[0] += 0.02
         blur(texture_clear_nd, blur_tmp, texture_clear_tmp_nd, stand_derivation)
 
         step(img_blur_nd, texture_clear_tmp_nd, rain_dir)
-        gui.set_image(img_blur_nd.to_numpy())
-        gui.show()
+        # canvas.set_image(img_blur_nd.to_numpy())
+        copy_to_field(img_blur_nd)
+        canvas.set_image(img_blur_field)
+        window.show()
 
 
 if __name__ == '__main__':
