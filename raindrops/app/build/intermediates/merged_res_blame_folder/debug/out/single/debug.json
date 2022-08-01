@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/home/ailing/github/taichi-aot-demo/raindrops/app/build/intermediates/merged_res/debug/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "/home/ailing/github/taichi-aot-demo/raindrops/app/src/main/res/mipmap-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/home/ailing/github/taichi-aot-demo/raindrops/app/build/intermediates/merged_res/debug/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "/home/ailing/github/taichi-aot-demo/raindrops/app/src/main/res/mipmap-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/home/ailing/github/taichi-aot-demo/raindrops/app/build/intermediates/merged_res/debug/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "/home/ailing/github/taichi-aot-demo/raindrops/app/src/main/res/mipmap-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/home/ailing/github/taichi-aot-demo/raindrops/app/build/intermediates/merged_res/debug/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "/home/ailing/github/taichi-aot-demo/raindrops/app/src/main/res/mipmap-xxhdpi/ic_launcher.png"
+    }
+]

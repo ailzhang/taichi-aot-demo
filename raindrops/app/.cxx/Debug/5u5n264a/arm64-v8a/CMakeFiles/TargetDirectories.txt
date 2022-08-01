@@ -1,0 +1,4 @@
+/home/ailing/github/taichi-aot-demo/raindrops/app/.cxx/Debug/5u5n264a/arm64-v8a/CMakeFiles/rebuild_cache.dir
+/home/ailing/github/taichi-aot-demo/raindrops/app/.cxx/Debug/5u5n264a/arm64-v8a/CMakeFiles/edit_cache.dir
+/home/ailing/github/taichi-aot-demo/raindrops/app/.cxx/Debug/5u5n264a/arm64-v8a/CMakeFiles/native-activity.dir
+/home/ailing/github/taichi-aot-demo/raindrops/app/.cxx/Debug/5u5n264a/arm64-v8a/CMakeFiles/native_app_glue.dir

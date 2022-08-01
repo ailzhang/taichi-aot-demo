@@ -257,6 +257,11 @@ static int engine_init_display(struct engine *engine) {
     taichi::lang::Device::AllocParams allocParamsImageClear,
         allocParamsImageBlur, allocParamsTexture, allocParamsAngle,
         allocParamsBlurFactor;
+    allocParamsImageClear.host_write = true;
+    allocParamsBlurFactor.host_write = true;
+    allocParamsAngle.host_write = true;
+    allocParamsTexture.host_write = true;
+    allocParamsImageBlur.host_write = true;
 
     allocParamsImageBlur.size =
         RENDER_RES_X * RENDER_RES_Y * sizeof(taichi::float32) * 4;

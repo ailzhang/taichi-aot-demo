@@ -1,0 +1,1 @@
+/home/ailing/github/taichi-aot-demo/raindrops/app/build/intermediates/cxx/Debug/5u5n264a/obj/arm64-v8a

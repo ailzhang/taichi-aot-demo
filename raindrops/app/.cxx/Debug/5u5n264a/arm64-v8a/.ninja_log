@@ -1,0 +1,7 @@
+# ninja log v5
+1	318	1659341578	CMakeFiles/native_app_glue.dir/home/ailing/Android/Sdk/ndk/23.1.7779620/sources/android/native_app_glue/android_native_app_glue.c.o	50e350dabb7bbb68
+318	405	1659341578	libnative_app_glue.a	ad1d9ff3f4fab961
+0	3678	1659341633	CMakeFiles/native-activity.dir/main.cpp.o	61d9ac08a45f804e
+3678	3916	1659341633	/home/ailing/github/taichi-aot-demo/raindrops/app/build/intermediates/cxx/Debug/5u5n264a/obj/arm64-v8a/libnative-activity.so	d8f28e5ac720dd2c
+1	3497	1659343006	CMakeFiles/native-activity.dir/main.cpp.o	61d9ac08a45f804e
+3497	3525	1659343006	/home/ailing/github/taichi-aot-demo/raindrops/app/build/intermediates/cxx/Debug/5u5n264a/obj/arm64-v8a/libnative-activity.so	d8f28e5ac720dd2c

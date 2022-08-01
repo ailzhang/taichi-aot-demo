@@ -1,0 +1,70 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<!-- BEGIN_INCLUDE(manifest) -->
+3<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+4    package="com.taichi.native_activity" >
+5
+6    <uses-sdk
+7        android:minSdkVersion="29"
+7-->/home/ailing/github/taichi-aot-demo/raindrops/app/src/main/AndroidManifest.xml
+8        android:targetSdkVersion="31" />
+8-->/home/ailing/github/taichi-aot-demo/raindrops/app/src/main/AndroidManifest.xml
+9
+10    <!-- This .apk has no Java code itself, so set hasCode to false. -->
+11    <application
+11-->/home/ailing/github/taichi-aot-demo/raindrops/app/src/main/AndroidManifest.xml:9:3-37:17
+12        android:allowBackup="false"
+12-->/home/ailing/github/taichi-aot-demo/raindrops/app/src/main/AndroidManifest.xml:10:7-34
+13        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+13-->[androidx.core:core:1.7.0] /home/ailing/.gradle/caches/transforms-3/976e8fa43c5296f10b35ffe0e55a9627/transformed/core-1.7.0/AndroidManifest.xml:24:18-86
+14        android:debuggable="true"
+15        android:extractNativeLibs="false"
+16        android:fullBackupContent="false"
+16-->/home/ailing/github/taichi-aot-demo/raindrops/app/src/main/AndroidManifest.xml:11:7-40
+17        android:hasCode="false"
+17-->/home/ailing/github/taichi-aot-demo/raindrops/app/src/main/AndroidManifest.xml:15:7-30
+18        android:icon="@mipmap/ic_launcher"
+18-->/home/ailing/github/taichi-aot-demo/raindrops/app/src/main/AndroidManifest.xml:12:7-41
+19        android:label="@string/app_name"
+19-->/home/ailing/github/taichi-aot-demo/raindrops/app/src/main/AndroidManifest.xml:13:7-39
+20        android:supportsRtl="true" >
+20-->/home/ailing/github/taichi-aot-demo/raindrops/app/src/main/AndroidManifest.xml:14:7-33
+21
+22        <!--
+23         Our activity is the built-in NativeActivity framework class.
+24         This will take care of integrating with our NDK code.
+25        -->
+26        <activity
+26-->/home/ailing/github/taichi-aot-demo/raindrops/app/src/main/AndroidManifest.xml:24:5-36:16
+27            android:name="android.app.NativeActivity"
+27-->/home/ailing/github/taichi-aot-demo/raindrops/app/src/main/AndroidManifest.xml:24:15-56
+28            android:configChanges="keyboardHidden"
+28-->/home/ailing/github/taichi-aot-demo/raindrops/app/src/main/AndroidManifest.xml:28:15-53
+29            android:exported="true"
+29-->/home/ailing/github/taichi-aot-demo/raindrops/app/src/main/AndroidManifest.xml:25:15-38
+30            android:label="@string/app_name"
+30-->/home/ailing/github/taichi-aot-demo/raindrops/app/src/main/AndroidManifest.xml:26:15-47
+31            android:screenOrientation="portrait" >
+31-->/home/ailing/github/taichi-aot-demo/raindrops/app/src/main/AndroidManifest.xml:27:15-51
+32
+33            <!-- Tell NativeActivity the name of our .so -->
+34            <meta-data
+34-->/home/ailing/github/taichi-aot-demo/raindrops/app/src/main/AndroidManifest.xml:30:7-31:52
+35                android:name="android.app.lib_name"
+35-->/home/ailing/github/taichi-aot-demo/raindrops/app/src/main/AndroidManifest.xml:30:18-53
+36                android:value="native-activity" />
+36-->/home/ailing/github/taichi-aot-demo/raindrops/app/src/main/AndroidManifest.xml:31:18-49
+37
+38            <intent-filter>
+38-->/home/ailing/github/taichi-aot-demo/raindrops/app/src/main/AndroidManifest.xml:32:7-35:23
+39                <action android:name="android.intent.action.MAIN" />
+39-->/home/ailing/github/taichi-aot-demo/raindrops/app/src/main/AndroidManifest.xml:33:9-61
+39-->/home/ailing/github/taichi-aot-demo/raindrops/app/src/main/AndroidManifest.xml:33:17-58
+40
+41                <category android:name="android.intent.category.LAUNCHER" />
+41-->/home/ailing/github/taichi-aot-demo/raindrops/app/src/main/AndroidManifest.xml:34:9-69
+41-->/home/ailing/github/taichi-aot-demo/raindrops/app/src/main/AndroidManifest.xml:34:19-66
+42            </intent-filter>
+43        </activity>
+44    </application>
+45
+46</manifest> <!-- END_INCLUDE(manifest) -->
