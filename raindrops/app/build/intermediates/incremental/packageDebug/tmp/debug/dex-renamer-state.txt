@@ -1,4 +1,4 @@
-#Mon Aug 01 16:36:46 CST 2022
+#Mon Aug 01 21:39:21 CST 2022
 base.2=/home/ailing/github/taichi-aot-demo/raindrops/app/build/intermediates/dex/debug/mergeProjectDexDebug/10/classes.dex
 path.2=10/classes.dex
 base.1=/home/ailing/github/taichi-aot-demo/raindrops/app/build/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex

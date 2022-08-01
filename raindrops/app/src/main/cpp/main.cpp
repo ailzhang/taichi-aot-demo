@@ -157,19 +157,6 @@ void loadData(taichi::lang::vulkan::VkRuntime *vulkan_runtime,
     vulkan_runtime->get_ti_device()->unmap(alloc);
 }
 
-void applyBlur(struct engine *engine) {
-    static float factor = 0.01f;
-    taichi::float32 *blurFactorBuffer = reinterpret_cast<taichi::float32 *>(
-        engine->vulkan_runtime->get_ti_device()->map(engine->dallocBlurFactor));
-    blurFactorBuffer[0] = factor;
-    engine->vulkan_runtime->get_ti_device()->unmap(engine->dallocBlurFactor);
-    engine->blurKernel->launch(&engine->hostCtxBlur);
-
-    factor += 0.1f;
-    if (factor > 10.f)
-        factor = 0.01f;
-}
-
 static int engine_init_display(struct engine *engine) {
     // Copy the assets from the AssetManager to internal storage so we can use a
     // file system path inside Taichi.
@@ -257,11 +244,6 @@ static int engine_init_display(struct engine *engine) {
     taichi::lang::Device::AllocParams allocParamsImageClear,
         allocParamsImageBlur, allocParamsTexture, allocParamsAngle,
         allocParamsBlurFactor;
-    allocParamsImageClear.host_write = true;
-    allocParamsBlurFactor.host_write = true;
-    allocParamsAngle.host_write = true;
-    allocParamsTexture.host_write = true;
-    allocParamsImageBlur.host_write = true;
 
     allocParamsImageBlur.size =
         RENDER_RES_X * RENDER_RES_Y * sizeof(taichi::float32) * 4;
@@ -337,6 +319,11 @@ static int engine_init_display(struct engine *engine) {
     engine->hostCtxStep.extra_args[2][0] = 1;
     engine->hostCtxStep.extra_args[2][1] = 1;
     engine->hostCtxStep.extra_args[2][2] = 1;
+    engine->hostCtxStep.set_arg(3, &engine->dallocBlurFactor);
+    engine->hostCtxStep.set_device_allocation(3, true);
+    engine->hostCtxStep.extra_args[3][0] = 1;
+    engine->hostCtxStep.extra_args[3][1] = 1;
+    engine->hostCtxStep.extra_args[3][2] = 1;
 
     engine->hostCtxBlur.set_arg(0, &engine->dallocTextureClear);
     engine->hostCtxBlur.set_device_allocation(0, true);
@@ -406,7 +393,16 @@ static void engine_draw_frame(struct engine *engine) {
     LOGI("PERF: elapsed_time_ms=%lfms FPS=%f", elapsed_time_ms, 1000.f / elapsed_time_ms);
 
     // Apply blur effect every frame
-    applyBlur(engine);
+    static int count = 0;
+    if (count % 200 == 0) {
+      taichi::float32 *blurFactorBuffer = reinterpret_cast<taichi::float32 *>(
+                      engine->vulkan_runtime->get_ti_device()->map(engine->dallocBlurFactor));
+      blurFactorBuffer[0] = 0.1;
+      engine->vulkan_runtime->get_ti_device()->unmap(engine->dallocBlurFactor);
+    }
+    count++;
+    engine->blurKernel->launch(&engine->hostCtxBlur);
+
 
     // Create Rain Drops effect
     engine->stepKernel->launch(&engine->hostCtxStep);

@@ -25,13 +25,22 @@
               "buffer": {
                 "type": 0,
                 "id": 0},
-              "binding": 2}]}],
-      "args_count": 3,
+              "binding": 2},{
+              "buffer": {
+                "type": 2,
+                "id": -1},
+              "binding": 0}]}],
+      "args_count": 4,
       "rets_count": 0,
-      "args_buffer_size": 24,
+      "args_buffer_size": 32,
       "rets_buffer_size": 0,
       "scalar_args": {},
-      "arr_args": {"2": {
+      "arr_args": {"3": {
+          "dtype_name": "f32",
+          "field_dim": 1,
+          "element_shape": [],
+          "shape_offset_in_args_buf": 12,
+          "bind_index": 0},"2": {
           "dtype_name": "f32",
           "field_dim": 1,
           "element_shape": [],
