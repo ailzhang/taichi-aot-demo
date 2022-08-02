@@ -3,8 +3,8 @@
 #include <chrono>
 
 #include <taichi/runtime/program_impls/vulkan/vulkan_program.h>
-#include <taichi/backends/vulkan/vulkan_common.h>
-#include <taichi/backends/vulkan/vulkan_loader.h>
+#include <taichi/rhi/vulkan/vulkan_common.h>
+#include <taichi/rhi/vulkan/vulkan_loader.h>
 #include <taichi/runtime/gfx/aot_module_loader_impl.h>
 #include <taichi/aot/graph_data.h>
 #include <inttypes.h>
@@ -122,7 +122,7 @@ int main() {
     taichi::lang::DeviceAllocation devalloc_spawn_box = device_->allocate_memory(alloc_params);
     auto spawn_box = taichi::lang::Ndarray(devalloc_spawn_box, taichi::lang::PrimitiveType::f32, {NR_PARTICLES}, {3});
     taichi::lang::DeviceAllocation devalloc_gravity = device_->allocate_memory(alloc_params);
-    auto gravity = taichi::lang::Ndarray(devalloc_gravity, taichi::lang::PrimitiveType::f32, {NR_PARTICLES}, {3});
+    auto gravity = taichi::lang::Ndarray(devalloc_gravity, taichi::lang::PrimitiveType::f32, {}, {3});
     alloc_params.host_write = alloc_params.host_read = false;
 
 
