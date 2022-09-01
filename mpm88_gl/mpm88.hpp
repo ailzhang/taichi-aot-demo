@@ -1,15 +1,12 @@
 #pragma once
 
-// #ifndef NO_GLAD
-// #include "glad/gl.h"
-// #endif
-// #include "GLFW/glfw3.h"
-
 #include <memory>
 #include <vector>
 #include <cassert>
 #include <iostream>
-#include "taichi.hpp"
+#include "taichi/cpp/taichi.hpp"
+#include "taichi/taichi_opengl.h"
+#include "renderer.h"
 
 class GLFWwindow;
 namespace demo {
@@ -25,6 +22,7 @@ public:
 
 private:
   std::unique_ptr<MPM88DemoImpl> impl_{nullptr};
+  std::unique_ptr<Renderer> render_{nullptr};
   GLFWwindow *window{nullptr};
 };
 

@@ -85,8 +85,18 @@ class MPM88DemoImpl {
       k_substep_g2p_.launch();
     }
     runtime_.wait();
+    /* For debugging
+    void* data = pos_.map();
+    std::cout << ((float *)data)[0] << std::endl;
+    pos_.unmap();
+    */
   }
 
+  TiOpenglMemoryInteropInfo x_interop() {
+    TiOpenglMemoryInteropInfo info;
+    ti_export_opengl_memory(runtime_, x_.memory(), &info);
+    return info;
+  }
  private:
   ti::Runtime runtime_;
   ti::AotModule module_;
@@ -137,11 +147,21 @@ MPM88Demo::MPM88Demo(const std::string& aot_path) {
 
   // Create Taichi Device for computation
   impl_ = std::make_unique<MPM88DemoImpl>(aot_path, TiArch::TI_ARCH_OPENGL);
+
+  //std::cout << buffer_id << std::endl;
+  TiOpenglMemoryInteropInfo interop_info = impl_->x_interop();
+  render_ = std::make_unique<Renderer>(interop_info.buffer, interop_info.size);
 }
 
 void MPM88Demo::Step() {
   while (!glfwWindowShouldClose(window)) {
     impl_->Step();
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+
+    // Render particles
+    render_->Render();
 
     glfwSwapBuffers(window);
     glfwPollEvents();

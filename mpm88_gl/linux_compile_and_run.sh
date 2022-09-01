@@ -1,5 +1,5 @@
 BACKEND_NAME="opengl" # cuda, x64, vulkan
-TAICHI_REPO="/home/ailzhang/github/taichi" # example: /home/taichigraphics/workspace/taichi
+TAICHI_REPO="/home/ailing/github/taichi" # example: /home/taichigraphics/workspace/taichi
 
 AOT_DIRECTORY="/tmp/aot_files"
 RUNTIME_LIB="${TAICHI_REPO}/python/taichi/_lib/runtime"

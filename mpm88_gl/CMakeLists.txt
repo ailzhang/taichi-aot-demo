@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_BUILD_TYPE Debug)
 
-add_executable(mpm88 mpm88.cpp)
+add_executable(mpm88 mpm88.cpp renderer.cpp)
 
 if("${TAICHI_REPO}" STREQUAL "")
     message(FATAL_ERROR "Set TAICHI_REPO with -DTAICHI_REPO=.. ")
@@ -20,7 +20,7 @@ target_include_directories(mpm88
     # ${PROJECT_SOURCE_DIR}
     ${TAICHI_REPO}/c_api/include
     # ${TAICHI_REPO}/c_api/src
-    ${TAICHI_REPO}/c_api/include/taichi/cpp
+    #${TAICHI_REPO}/c_api/include/taichi/cpp
   )
 
 target_link_directories(mpm88
