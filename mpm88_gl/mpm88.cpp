@@ -15,11 +15,15 @@ void check_opengl_error(const std::string &msg) {
     std::cout << msg << ":" << (int)err << std::endl;
   }
 }
+static void glfw_error_callback(int code, const char *desc) {
+  std::cout << "GLFW ERROR: " << code << ": " << desc << std::endl;
+}
 }
 
 constexpr int kNrParticles = 8192 * 2;
 constexpr int kNGrid = 128;
 constexpr size_t N_ITER = 50;
+constexpr bool use_gles = false;
 
 class MPM88DemoImpl {
  public:
@@ -121,11 +125,16 @@ MPM88Demo::MPM88Demo(const std::string& aot_path) {
   if (!glfwInit()) {
     return;
   }
+  glfwSetErrorCallback(glfw_error_callback);
 
+  if (use_gles) {
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
+  } else {
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+  }
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
   window = glfwCreateWindow(512, 512, "Taichi show", NULL, NULL);
   if (!window) {
@@ -135,7 +144,10 @@ MPM88Demo::MPM88Demo(const std::string& aot_path) {
 
   glfwMakeContextCurrent(window);
 
-  if (!gladLoadGL(glfwGetProcAddress)) {
+  if (use_gles && !gladLoadGLES2(glfwGetProcAddress)) {
+    std::cout << "Failed to initialze OpenGL context" << std::endl;
+    return;
+  } else if (!use_gles && !gladLoadGL(glfwGetProcAddress)) {
     std::cout << "Failed to initialze OpenGL context" << std::endl;
     return;
   }

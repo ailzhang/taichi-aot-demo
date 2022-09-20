@@ -27,7 +27,7 @@ gravity = 9.8
 bound = 3
 E = 400
 
-ti.init(arch=arch)
+ti.init(arch=arch, use_gles=True)
 
 @ti.kernel
 def substep_reset_grid(grid_v: ti.any_arr(field_dim=2),
@@ -137,15 +137,27 @@ grid_m = ti.ndarray(ti.f32, shape=(n_grid, n_grid))
 #    gui.show()
 
 if __name__ == '__main__':
-    # Serialize!
-    save_dir = args.dir
-    mod = ti.aot.Module(arch)
-    
-    mod.add_kernel(init_particles,        template_args={'x' : x, 'v': v, 'J': J})
-    mod.add_kernel(substep_reset_grid,    template_args={'grid_v': grid_v, 'grid_m': grid_m})
-    mod.add_kernel(substep_p2g,           template_args={'x' : x, 'v': v, 'C': C, 'J': J, 'grid_v': grid_v, 'grid_m': grid_m})
-    mod.add_kernel(substep_update_grid_v, template_args={'grid_v': grid_v, 'grid_m': grid_m})
-    mod.add_kernel(substep_g2p,           template_args={'x' : x, 'v': v, 'C': C, 'J': J, 'grid_v': grid_v, 'pos': pos})
-    
-    mod.save(save_dir, '')
+    ## Serialize!
+    #save_dir = args.dir
+    #mod = ti.aot.Module(arch)
+
+    #mod.add_kernel(init_particles,        template_args={'x' : x, 'v': v, 'J': J})
+    #mod.add_kernel(substep_reset_grid,    template_args={'grid_v': grid_v, 'grid_m': grid_m})
+    #mod.add_kernel(substep_p2g,           template_args={'x' : x, 'v': v, 'C': C, 'J': J, 'grid_v': grid_v, 'grid_m': grid_m})
+    #mod.add_kernel(substep_update_grid_v, template_args={'grid_v': grid_v, 'grid_m': grid_m})
+    #mod.add_kernel(substep_g2p,           template_args={'x' : x, 'v': v, 'C': C, 'J': J, 'grid_v': grid_v, 'pos': pos})
+
+    #mod.save(save_dir, '')
+
+    init_particles(x, v, J)
+    gui = ti.GUI('MPM88')
+    while gui.running:
+        for i in range(50):
+            substep_reset_grid(grid_v, grid_m)
+            substep_p2g(x, v, C, J, grid_v, grid_m)
+            substep_update_grid_v(grid_v, grid_m)
+            substep_g2p(x, v, C, J, grid_v, pos)
+        gui.clear(0x112F41)
+        gui.circles(x.to_numpy(), radius=1.5, color=0x068587)
+        gui.show()
 
