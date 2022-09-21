@@ -9,12 +9,6 @@
 namespace demo {
 
 namespace {
-void check_opengl_error(const std::string &msg) {
-  auto err = glGetError();
-  if (err != GL_NO_ERROR) {
-    std::cout << msg << ":" << (int)err << std::endl;
-  }
-}
 static void glfw_error_callback(int code, const char *desc) {
   std::cout << "GLFW ERROR: " << code << ": " << desc << std::endl;
 }
@@ -157,8 +151,10 @@ MPM88Demo::MPM88Demo(const std::string& aot_path) {
   std::cout << "GLFW version: " << major << "." << minor << "." << rev << std::endl;
   std::cout << "GLSL version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 
+  PrintGLError();
+
   // Create Taichi Device for computation
-  impl_ = std::make_unique<MPM88DemoImpl>(aot_path, TiArch::TI_ARCH_OPENGL);
+  impl_ = std::make_unique<MPM88DemoImpl>(aot_path, use_gles ? TiArch::TI_ARCH_GLES : TiArch::TI_ARCH_OPENGL);
 
   //std::cout << buffer_id << std::endl;
   TiOpenglMemoryInteropInfo interop_info = impl_->x_interop();
@@ -174,6 +170,7 @@ void MPM88Demo::Step() {
 
     // Render particles
     render_->Render();
+    PrintGLError();
 
     glfwSwapBuffers(window);
     glfwPollEvents();

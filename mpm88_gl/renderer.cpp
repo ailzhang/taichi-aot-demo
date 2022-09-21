@@ -40,7 +40,7 @@ bool CreateAndCompileShader(GLuint &shader_id, GLenum shader_type, const char* s
         return false;
     }
 
-    return true;       
+    return true;
 }
 }
 
@@ -152,7 +152,7 @@ bool Program::Link()
         LogError("Program::Link(): AttachShader(comp_shader) failed!\n");
     }
 
-   
+
     glLinkProgram(program_id);
 
     GLint status;
@@ -256,7 +256,7 @@ const std::string Renderer::FRAG_SRC = R"(
 
 Renderer::Renderer(GLuint pos, GLsizei count): pos_(pos), count_(count) {
   program_ = Program::Create();
-  
+
   auto vert_shader = Shader::CreateFromSource(VERT_SRC, GL_VERTEX_SHADER);
   if (vert_shader == nullptr) {
     LogError("Init vert_shader failed\n");
@@ -277,15 +277,15 @@ Renderer::Renderer(GLuint pos, GLsizei count): pos_(pos), count_(count) {
     return;
   }
 
-  glGenVertexArrays(1, &vertex_array_buffer_); PrintGLError();  
+  glGenVertexArrays(1, &vertex_array_buffer_); PrintGLError();
   glBindVertexArray(vertex_array_buffer_); PrintGLError();
   {
-      glBindBuffer(GL_ARRAY_BUFFER, pos_); PrintGLError();  
-      GLint posAttrib = glGetAttribLocation(program_->program_id, "viPos"); PrintGLError();  
-      glEnableVertexAttribArray(posAttrib); PrintGLError();  
+      glBindBuffer(GL_ARRAY_BUFFER, pos_); PrintGLError();
+      GLint posAttrib = glGetAttribLocation(program_->program_id, "viPos"); PrintGLError();
+      glEnableVertexAttribArray(posAttrib); PrintGLError();
       glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), NULL); PrintGLError();
   }
-  glBindVertexArray(0); PrintGLError();  // unbind 
+  glBindVertexArray(0); PrintGLError();  // unbind
 }
 
 Renderer::~Renderer() {
@@ -298,11 +298,16 @@ Renderer::~Renderer() {
 bool Renderer::Render() {
     program_->Enable();
     {
-        glEnable(GL_PROGRAM_POINT_SIZE);
+        // WARNING: GL_PROGRAM_POINT_SIZE doesn't exist in GLES
+        // glEnable(GL_PROGRAM_POINT_SIZE);
         glBindVertexArray(vertex_array_buffer_);
+        PrintGLError();
         glBindBuffer(GL_ARRAY_BUFFER, pos_);
+        PrintGLError();
         glDrawArrays(GL_POINTS, 0, count_);
+        PrintGLError();
         glBindVertexArray(0);
+        PrintGLError();
     }
     program_->Disable();
 
