@@ -18,4 +18,5 @@ imgui.ini
 5_sph/assets/sph_*/**
 6_taichi_sparse/assets/taichi_sparse_*/**
 7_comet/assets/comet_*/**
+8_nerf/assets/tutorial/**
 output/*
