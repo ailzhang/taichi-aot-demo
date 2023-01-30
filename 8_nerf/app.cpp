@@ -2,15 +2,15 @@
 #include <iostream>
 #include <numeric>
 #include <vector>
-#include "assets/tutorial/hash_embedding.hpp"
-#include "assets/tutorial/density_bitfield.hpp"
-#include "assets/tutorial/pose.hpp"
-#include "assets/tutorial/rgb_weights.hpp"
-#include "assets/tutorial/sigma_weights.hpp"
-#include "assets/tutorial/directions.hpp"
-#include "assets/tutorial/offsets.hpp"
-#include "assets/tutorial/hash_map_sizes.hpp"
-#include "assets/tutorial/hash_map_indicator.hpp"
+#include "assets/compiled/hash_embedding.hpp"
+#include "assets/compiled/density_bitfield.hpp"
+#include "assets/compiled/pose.hpp"
+#include "assets/compiled/rgb_weights.hpp"
+#include "assets/compiled/sigma_weights.hpp"
+#include "assets/compiled/directions.hpp"
+#include "assets/compiled/offsets.hpp"
+#include "assets/compiled/hash_map_sizes.hpp"
+#include "assets/compiled/hash_map_indicator.hpp"
 #include <vulkan/vulkan.h>
 #include <taichi/cpp/taichi.hpp>
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -88,7 +88,7 @@ struct App8_nerf {
 
   App8_nerf() {
     runtime_ = ti::Runtime(TI_ARCH_VULKAN);
-    module_ = runtime_.load_aot_module("8_nerf/assets/tutorial");
+    module_ = runtime_.load_aot_module("8_nerf/assets/compiled");
     check_taichi_error("load_aot_module failed");
     k_reset_ = module_.get_kernel("reset");
     k_ray_intersect_ = module_.get_kernel("ray_intersect");
@@ -295,7 +295,7 @@ struct App8_nerf {
 
       check_taichi_error("render a frame failed");
     }
-    // TODO: Save NGP_rgb as image.
+
     std::vector<float> img(W * H * 3);
     rgb_.read(img);
     unsigned char data[W * H * 3];
